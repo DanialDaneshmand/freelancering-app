@@ -3,3 +3,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components{
+    .textFeild__input{
+        @apply transition-all duration-300 p-2 border border-gray-300 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:shadow-sm text-gray-600 focus:shadow-blue-500 w-full outline-none
+    }
+
+    .btn{
+        @apply transition-all duration-300 bg-blue-600 hover:bg-blue-500 text-white py-2 w-full rounded-xl
+    }
+}
+
+body{
+    background: #efefef;
+    direction: rtl;
+}
+
+label{
+    display: block;
+}
