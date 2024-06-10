@@ -6,12 +6,15 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa6";
 import { FaPencil } from "react-icons/fa6";
+import Loading from "../../ui/Loading";
 
 const RESEND_OTP = 5;
 
 function CheckOtp({ phoneNumber, setStep, onSendOtp, otpResponse }) {
   const [otp, setOtp] = useState("");
   const [time, setTime] = useState(RESEND_OTP);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer =
@@ -24,7 +27,6 @@ function CheckOtp({ phoneNumber, setStep, onSendOtp, otpResponse }) {
     };
   }, []);
 
-  const navigate = useNavigate();
   const { isPending, error, data, mutateAsync } = useMutation({
     mutationFn: checkOtp,
   });
@@ -34,14 +36,16 @@ function CheckOtp({ phoneNumber, setStep, onSendOtp, otpResponse }) {
 
     try {
       const { user, message } = await mutateAsync({ phoneNumber, otp });
-      console.log(user, message);
       toast.success(message);
       if (user.isActive) {
-        if (user.role === "OWNER") navigate("/owner");
-        if (user.role === "FREELANCER") navigate("/freelancer");
-      } else {
-        navigate("/complete-profile");
+        return navigate("/complete-profile");
       }
+      if (user.status !== 2) {
+        toast.success("پروفایل شما در انتظار تایید است .")
+        return navigate("/");
+      }
+      if (user.role==="OWNER") return navigate("/owner")
+      if (user.role==="FREELANCER") return navigate("/freelancer")
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -53,10 +57,10 @@ function CheckOtp({ phoneNumber, setStep, onSendOtp, otpResponse }) {
         <button onClick={() => setStep(1)} className="text-2xl text-gray-700">
           <FaArrowRight />
         </button>
-        {!otpResponse && (
+        {otpResponse && (
           <p className="flex items-center">
             <span>{otpResponse?.message}</span>
-            <button onClick={()=>setStep(1)}>
+            <button onClick={() => setStep(1)}>
               <FaPencil className="text-blue-700" />
             </button>
           </p>
