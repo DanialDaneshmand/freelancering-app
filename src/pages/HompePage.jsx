@@ -2,7 +2,10 @@ import React from 'react'
 
 function HompePage() {
   return (
-    <div>HompePage</div>
+    <div className="container  xl:max-w-screen-xl ">
+      home page
+    </div>
+
   )
 }
 

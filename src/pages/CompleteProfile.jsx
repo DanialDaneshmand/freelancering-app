@@ -1,12 +1,14 @@
-import React from 'react'
-import CompleteProfileForm from '../features/authenication/CompleteProfileForm'
+import React from "react";
+import CompleteProfileForm from "../features/authenication/CompleteProfileForm";
 
 function CompleteProfile() {
   return (
-    <div>
-        <CompleteProfileForm/>
+    <div className="container  xl:max-w-screen-xl ">
+      <div>
+        <CompleteProfileForm />
+      </div>
     </div>
-  )
+  );
 }
 
-export default CompleteProfile
+export default CompleteProfile;
