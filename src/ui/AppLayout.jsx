@@ -9,8 +9,10 @@ function AppLayout() {
       <Sidebar />
       <div className=" col-span-3 ">
         <Header />
-        <div className="mx-auto max-w-screen-md">
+        <div className=" bg-gray-200 h-full py-16">
+        <div className="mx-auto max-w-screen-md p-6 ">
           <Outlet />
+        </div>
         </div>
       </div>
     </div>
