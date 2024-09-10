@@ -6,20 +6,21 @@ import { completeProfile } from "../../services/authService";
 import toast from "react-hot-toast";
 import Loading from "../../ui/Loading";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 function CompleteProfileForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
-const navigate=useNavigate()
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [role, setRole] = useState("");
+  const { register, handleSubmit,formState:{errors} ,watch} = useForm();
+  const navigate = useNavigate();
   const { isPending, error, data, mutateAsync } = useMutation({
     mutationFn: completeProfile,
   });
 
-  const handleProfileSubmit = async (e) => {
-    e.preventDefault();
+  const handleProfileSubmit = async (data) => {
     try {
-      const { user, message } = await mutateAsync({ name, email, role });
+      const { user, message } = await mutateAsync(data);
       toast.success(message);
       if (user.status !== 2) {
         toast.success("پروفایل شما در انتظار تایید است .");
@@ -34,33 +35,51 @@ const navigate=useNavigate()
   return (
     <div className="flex justify-center items-center h-screen p-16 sm:p-0">
       <div className="w-full sm:max-w-sm">
-        <form className="space-y-8" onSubmit={handleProfileSubmit}>
+        <div className="flex justify-center items-center mb-16">
+          <p className="text-4xl font-bold text-slate-800">تکمیل اطلاعات</p>
+        </div>
+        <form
+          className="space-y-8"
+          onSubmit={handleSubmit(handleProfileSubmit)}
+        >
           <TextFeild
             label="نام و نام خانوادگی"
             name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            register={register}
+            validationSchema={{
+              required: " نام ضروری است",
+            }}
+            required
+            errors={errors}
           />
           <TextFeild
             label="ایمیل "
             name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            register={register}
+            validationSchema={{
+              required: " ایمیل ضروری است",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "ایمیل نامعتبر است"
+              }
+            }}
+            required
+            errors={errors}
           />
           <div className="flex justify-center gap-x-8">
             <RadioInput
               name="role"
               value="OWNER"
               label="کارفرما"
-              onChange={(e) => setRole(e.target.value)}
-              checked={role === "OWNER"}
+              register={register}
+              checked={watch("role") === "OWNER"}
             />
             <RadioInput
               name="role"
               value="FREELANCER"
               label="فریلنسر"
-              onChange={(e) => setRole(e.target.value)}
-              checked={role === "FREELANCER"}
+              register={register}
+              checked={watch("role") === "FREELANCER"}
             />
           </div>
           {isPending ? (

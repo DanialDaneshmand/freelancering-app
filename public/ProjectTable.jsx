@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useOwnerProjects } from "./useOwnerProjects";
 import truncateText from "../../utils/truncateText";
 import { toPersianNumbersWithComma } from "../../utils/toPersianNumbers";
+import Table from "../../ui/Table";
 import { FaPencil } from "react-icons/fa6";
 import { FaRegTrashCan } from "react-icons/fa6";
 import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 import useRemoveProjects from "./useDeleteProjects";
 import AddProject from "./AddProject";
+import axios from "axios";
+import http from "../../services/httpServices";
 import toLocalDateShort from "../../utils/toLocalDateShort";
-import ConfirmDelete from "../../ui/confirmDelete";
 
 function ProjectTable() {
   const { isLoading, projects } = useOwnerProjects();
@@ -119,7 +122,7 @@ function ProjectTable() {
                           })
                         }
                         onClose={() => setIsOpenDelete(false)}
-                        disabeld={false}
+                        // disabeld={false}
                       />
                     </Modal>
                   </>

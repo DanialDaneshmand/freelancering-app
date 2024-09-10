@@ -1,4 +1,4 @@
-
+@import url('/font.css');
 
 @tailwind base;
 @tailwind components;
@@ -15,6 +15,7 @@
 }
 
 body{
+    font-family: "Vazir";
     background: #efefef;
     direction: rtl;
 }

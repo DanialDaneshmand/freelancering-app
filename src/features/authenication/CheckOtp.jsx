@@ -8,7 +8,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import { FaPencil } from "react-icons/fa6";
 import Loading from "../../ui/Loading";
 
-const RESEND_OTP = 5;
+const RESEND_OTP = 90;
 
 function CheckOtp({ phoneNumber, setStep, onSendOtp, otpResponse }) {
   const [otp, setOtp] = useState("");
@@ -37,7 +37,8 @@ function CheckOtp({ phoneNumber, setStep, onSendOtp, otpResponse }) {
     try {
       const { user, message } = await mutateAsync({ phoneNumber, otp });
       toast.success(message);
-      if (user.isActive) {
+      if (!user.isActive) {
+        
         return navigate("/complete-profile");
       }
       if (user.status !== 2) {
@@ -102,3 +103,5 @@ function CheckOtp({ phoneNumber, setStep, onSendOtp, otpResponse }) {
 }
 
 export default CheckOtp;
+
+
